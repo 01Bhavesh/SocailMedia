@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.UserService.UserInterface;
 import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
 
@@ -22,17 +24,13 @@ public class UserController{
 	@Autowired
 	UserRepository userRepo;
 	
+	@Autowired
+	UserInterface userService;
+	
 	@PostMapping("/user/data")
 	private User postUser(@RequestBody User user)
 	{
-		User newU = new User();
-		newU.setId(user.getId());
-		newU.setFirstName(user.getFirstName());
-		newU.setLastName(user.getLastName());
-		newU.setGmail(user.getGmail());
-		newU.setPassword(user.getPassword());
-		
-		User saved = userRepo.save(newU);
+		User saved = userService.resisterUser(user);
 		
 		return saved;
 	}
@@ -54,66 +52,53 @@ public class UserController{
 		return lst;
 	}
 	
-	@GetMapping("/user/{userId}")
-	private User getUserById(@PathVariable("userId") Integer id) throws Exception
-	{
-//		List<User> lst = new ArrayList<>();
-//		User u1 = new User(1,"Bhavesh","Gharat","gharatbhavesh@gmail.com","Bhavesh@20");
-//		u1.setId(id);
-		
-		Optional<User> user = userRepo.findById(id);
-		if(user.isPresent())
-		{
-			return user.get();
-		}
-		
-		throw new Exception("User not exit with id "+id ) ;
+	@GetMapping("/user/{id}")
+	private User getUserById(@PathVariable Integer id) throws Exception
+	{		
+		User user = userService.findUserById(id);
+		return user;
 	}
 	
+	@GetMapping("/user/gmail/{userEmail}")
+	private User getUserByGmail(@PathVariable("userEmail") String email) throws Exception
+	{		
+		User user = userService.findUserByEmailid(email);
+		return user;
+	}
 	
 	@PutMapping("/user/{id}")
 	public User updateUser(@RequestBody User user,@PathVariable Integer id) throws Exception {
 		
-		Optional<User> olduser = userRepo.findById(id);
-		if(olduser.isEmpty())
-		{
-			throw new Exception("User not found");
-		}
-		
-		User updateU = olduser.get();
-		if(user.getFirstName() != null)
-		{
-			updateU.setFirstName(user.getFirstName());
-		}
-		if(user.getLastName() != null)
-		{
-			updateU.setLastName(user.getLastName());
-		}
-		if(user.getGmail() != null)
-		{
-			updateU.setGmail(user.getGmail());
-		}
-		if(user.getPassword() != null)
-		{
-			updateU.setPassword(user.getPassword());
-		}
-		
-		User updatedUser = userRepo.save(updateU);
-		
+		User updatedUser = userService.updateUser(user, id);
 		return updatedUser;
 	}
-	@DeleteMapping("/user/{UserId}")
-	private String deleteUserById(@PathVariable Integer UserId) throws Exception
+	
+	@PutMapping("/user/follow/{userid1}/{userid2}")
+	public User followUserHandler(@PathVariable Integer userid1,@PathVariable Integer userid2) throws Exception
 	{
-		Optional<User> user = userRepo.findById(UserId);
-		if(user.isEmpty())
-		{
-			throw new Exception ("User dose not exit with id "+UserId);
-		}
-		User delUser = user.get();
-		userRepo.delete(delUser);
-		
-		return "deteted successfully user "+UserId;
+		User user = userService.followUser(userid1, userid2);
+		return user;
 	}
+	
+	@GetMapping("/users/search")
+	public List<User> searchUser(@RequestParam("query") String query)
+	{
+		List<User> lst = userService.searchUser(query);
+		return lst;
+	}
+	
+//	@DeleteMapping("/user/{UserId}")
+//	private String deleteUserById(@PathVariable Integer UserId) throws Exception
+//	{
+//		Optional<User> user = userRepo.findById(UserId);
+//		if(user.isEmpty())
+//		{
+//			throw new Exception ("User dose not exit with id "+UserId);
+//		}
+//		User delUser = user.get();
+//		userRepo.delete(delUser);
+//		
+//		return "deteted successfully user "+UserId;
+//	}
 	
 }
