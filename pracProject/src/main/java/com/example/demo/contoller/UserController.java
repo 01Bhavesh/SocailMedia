@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,16 +28,10 @@ public class UserController{
 	@Autowired
 	UserInterface userService;
 	
-	@PostMapping("/user/data")
-	private User postUser(@RequestBody User user)
-	{
-		User saved = userService.resisterUser(user);
-		
-		return saved;
-	}
 	
 	
-	@GetMapping("/users")
+	
+	@GetMapping("/api/users")
 	private List<User> getUsers()
 	{
 //		List<User> lst = new ArrayList<>();
@@ -52,35 +47,37 @@ public class UserController{
 		return lst;
 	}
 	
-	@GetMapping("/user/{id}")
+	@GetMapping("/api/user/{id}")
 	private User getUserById(@PathVariable Integer id) throws Exception
 	{		
 		User user = userService.findUserById(id);
 		return user;
 	}
 	
-	@GetMapping("/user/gmail/{userEmail}")
+	@GetMapping("/api/user/gmail/{userEmail}")
 	private User getUserByGmail(@PathVariable("userEmail") String email) throws Exception
 	{		
 		User user = userService.findUserByEmailid(email);
 		return user;
 	}
 	
-	@PutMapping("/user/{id}")
-	public User updateUser(@RequestBody User user,@PathVariable Integer id) throws Exception {
+	@PutMapping("/api/user")
+	public User updateUser(@RequestHeader("Authorization") String jwt,@RequestBody User user) throws Exception {
 		
-		User updatedUser = userService.updateUser(user, id);
+		User reqUser = userService.findUserByJwt(jwt);
+		User updatedUser = userService.updateUser(user, reqUser.getId());
 		return updatedUser;
 	}
 	
-	@PutMapping("/user/follow/{userid1}/{userid2}")
-	public User followUserHandler(@PathVariable Integer userid1,@PathVariable Integer userid2) throws Exception
+	@PutMapping("/api/user/follow/{userid2}")
+	public User followUserHandler(@RequestHeader("Authorization") String jwt,@PathVariable Integer userid2) throws Exception
 	{
-		User user = userService.followUser(userid1, userid2);
+		User reqUser = userService.findUserByJwt(jwt);
+		User user = userService.followUser(reqUser.getId(), userid2);
 		return user;
 	}
 	
-	@GetMapping("/users/search")
+	@GetMapping("/api/users/search")
 	public List<User> searchUser(@RequestParam("query") String query)
 	{
 		List<User> lst = userService.searchUser(query);
@@ -100,5 +97,11 @@ public class UserController{
 //		
 //		return "deteted successfully user "+UserId;
 //	}
-	
+	@GetMapping("/api/users/profile")
+	public User getUserFromToken(@RequestHeader("Authorization") String jwt)
+	{
+		User user = userService.findUserByJwt(jwt);
+		user.setPassword(null);
+		return user;
+	}
 }

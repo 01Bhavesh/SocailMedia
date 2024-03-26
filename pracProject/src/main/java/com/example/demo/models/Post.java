@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -34,14 +35,17 @@ public class Post {
 	@OneToMany
 	private List<User> liked = new ArrayList<>();
 	
-	
+	@OneToMany
+	private List<Comment> comments = new ArrayList<>();
 	
 	public Post() {
 		super();
 	}
 	
+	
+
 	public Post(Integer id, String caption, String image, String video, User user, LocalDateTime createdAt,
-			List<User> liked) {
+			List<User> liked, List<Comment> comments) {
 		super();
 		this.id = id;
 		this.caption = caption;
@@ -50,7 +54,22 @@ public class Post {
 		this.user = user;
 		this.createdAt = createdAt;
 		this.liked = liked;
+		this.comments = comments;
 	}
+
+
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+
 
 	public Integer getId() {
 		return id;

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.config.jwtProvider;
 import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
 
@@ -48,18 +49,18 @@ public class UserServiceImplementation implements UserInterface{
 	}
 
 	@Override
-	public User followUser(Integer UserId1, Integer UserId2) throws Exception {
+	public User followUser(Integer reqUserId, Integer UserId2) throws Exception {
 		
-		User user1 = findUserById(UserId1);
+		User reqUser = findUserById(reqUserId);
 		User user2 = findUserById(UserId2);
 		
-		user2.getFollowers().add(user1.getId());
-		user1.getFollowing().add(user2.getId());
+		user2.getFollowers().add(reqUser.getId());
+		reqUser.getFollowing().add(user2.getId());
 		
-		userRepo.save(user1);
+		userRepo.save(reqUser);
 		userRepo.save(user2);
 		
-		return user1;
+		return reqUser;
 	}
 
 	@Override
@@ -101,6 +102,13 @@ public class UserServiceImplementation implements UserInterface{
 	public List<User> searchUser(String query) {
 		
 		return userRepo.searchUser(query);
+	}
+
+	@Override
+	public User findUserByJwt(String jwt) {
+		String gmail = jwtProvider.getEmailFromJwtToken(jwt);
+		User user = userRepo.findByGmail(gmail);
+		return user;
 	}
 
 }
