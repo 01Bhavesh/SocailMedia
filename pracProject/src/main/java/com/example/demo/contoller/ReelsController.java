@@ -20,18 +20,21 @@ public class ReelsController {
 	@Autowired
 	private ReelsService reelsService;
 	
+	@Autowired
 	private UserInterface userServiec;
 	
-	@PostMapping("/api/Reels")
-	public Reels createReels(@RequestBody Reels reel,@RequestHeader("Authorization") String jwt)
+	@PostMapping("/api/reels")
+	public Reels createReels(@RequestHeader("Authorization") String jwt, @RequestBody Reels reel)
 	{
+//		System.out.println(jwt);
+		
 		User reqUser = userServiec.findUserByJwt(jwt);
 		Reels createdReel = reelsService.createReel(reel, reqUser);
 		
 		return createdReel;
 	}
 	
-	@GetMapping("/api/Reels")
+	@GetMapping("/api/reels")
 	public List<Reels> FindAllReels()
 	{
 		List<Reels> Reel = reelsService.findAllReels();
@@ -40,7 +43,7 @@ public class ReelsController {
 	}
 	
 
-	@GetMapping("/api/Reels/user/{userid}")
+	@GetMapping("/api/reels/user/{userid}")
 	public List<Reels> FindUserReels(@PathVariable Integer userid) throws Exception
 	{
 		List<Reels> Reel = reelsService.findUsersReel(userid);
