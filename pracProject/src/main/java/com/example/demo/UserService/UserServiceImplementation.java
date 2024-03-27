@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.config.jwtProvider;
+import com.example.demo.exception.UserException;
 import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
 
@@ -32,14 +33,14 @@ public class UserServiceImplementation implements UserInterface{
 	}
 
 	@Override
-	public User findUserById(Integer id) throws Exception {
+	public User findUserById(Integer id) throws UserException {
 		Optional<User> user = userRepo.findById(id);
 		if(user.isPresent())
 		{
 			return user.get();
 		}
 		
-		throw new Exception("User not exit with id "+id ) ;
+		throw new UserException("User not exit with id "+id ) ;
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class UserServiceImplementation implements UserInterface{
 	}
 
 	@Override
-	public User followUser(Integer reqUserId, Integer UserId2) throws Exception {
+	public User followUser(Integer reqUserId, Integer UserId2) throws UserException {
 		
 		User reqUser = findUserById(reqUserId);
 		User user2 = findUserById(UserId2);
@@ -64,11 +65,11 @@ public class UserServiceImplementation implements UserInterface{
 	}
 
 	@Override
-	public User updateUser(User user,Integer id) throws Exception {
+	public User updateUser(User user,Integer id) throws UserException {
 		Optional<User> olduser = userRepo.findById(id);
 		if(olduser.isEmpty())
 		{
-			throw new Exception("User not found");
+			throw new UserException("User not found");
 		}
 		
 		User updateU = olduser.get();

@@ -42,7 +42,6 @@ public class ChatServiceImplementation implements ChatService{
 		{
 			throw new Exception("Chat not found with Id "+chatid);
 		}
-		
 		return opt.get();
 	}
 
