@@ -30,13 +30,13 @@ public class AppConfig {
 			.anyRequest().permitAll())
 			.addFilterBefore(new jwtValidator(), BasicAuthenticationFilter.class)
 		.csrf(csrf -> csrf.disable())
-		.cors(cors->cors.configurationSource(CorsConfigurationSource()));
+		.cors(cors->cors.configurationSource(corsConfigurationSource()));
 		
 		
 		return http.build();
 	}
 	
-	private CorsConfigurationSource CorsConfigurationSource() {
+	private CorsConfigurationSource corsConfigurationSource() {
 		// TODO Auto-generated method stub
 		return new CorsConfigurationSource() {
 			
@@ -44,7 +44,7 @@ public class AppConfig {
 			public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 				
 				CorsConfiguration cfg = new CorsConfiguration(); 
-				cfg.setAllowedOrigins(Arrays.asList("http://localhost:7979/"));
+				cfg.setAllowedOrigins(Arrays.asList("http://localhost:3000/"));
 				cfg.setAllowedMethods(Collections.singletonList("*"));
 				cfg.setAllowCredentials(true);
 				cfg.setAllowedHeaders(Collections.singletonList("*"));

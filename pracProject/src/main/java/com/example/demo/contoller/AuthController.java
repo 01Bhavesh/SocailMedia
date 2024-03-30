@@ -32,7 +32,7 @@ public class AuthController {
 	@Autowired
 	private CustomerUserDetailsService customerUserDetailsService;
 	
-	@PostMapping("/api/user/data")
+	@PostMapping("/signup")
 	private AuthResponse postUser(@RequestBody User user) throws Exception
 	{
 		User isExist = userRepo.findByGmail(user.getGmail());
