@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Route, Routes, useLocation} from 'react-router-dom';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import MiddlePart from '../../components/MiddlePart/MiddlePart';
@@ -7,9 +7,18 @@ import Reels from '../../components/Reels/Reels';
 import CreateReelsForm from '../../components/Reels/CreateReelsForm';
 import Profile from '../Profile/Profile';
 import HomeRight from '../HomeRight/HomeRight';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const HomePage = () => {
+  // const dispatch=useDispatch();
     const location=useLocation();
+    const jwt = localStorage.getItem("jwt");
+    const {auth} = useSelector(store=>store);
+
+    console.log("auth",auth);
+    // useEffect(()=>{
+    //   dispatch(getProfileAction(jwt))
+    // },[])
   return (
     <div className='px-20'>
         <Grid container spacing={0}>
@@ -26,11 +35,11 @@ export const HomePage = () => {
        <Route path="/profile/:id" element={<Profile></Profile>}></Route>
     </Routes>
     </Grid>
-    <Grid item lg={3} className='relative'>
+    {location.pathname==="/" && <Grid item lg={3} className='relative'>
     <div className='sticky top-0 w-full'>
     <HomeRight></HomeRight>
     </div>
-    </Grid>
+    </Grid>}
         </Grid>
     </div>
   )
