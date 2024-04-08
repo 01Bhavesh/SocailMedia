@@ -13,14 +13,14 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
+  width: 500,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 2,
   outline : "none",
   overFlow : "scroll-y",
-  borderRadius : 3, 
+  borderRadius : 2, 
 };
 
 export default function ProfileModel({ open,handleClose }) {

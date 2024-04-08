@@ -35,8 +35,9 @@ public class AuthController {
 	@PostMapping("/signup")
 	private AuthResponse postUser(@RequestBody User user) throws Exception
 	{
+		System.out.println(user.getFirstName()+" "+user.getGmail());
 		User isExist = userRepo.findByGmail(user.getGmail());
-		
+		System.out.println(isExist);
 		if(isExist != null)
 		{
 			throw new Exception("Email is already in used");

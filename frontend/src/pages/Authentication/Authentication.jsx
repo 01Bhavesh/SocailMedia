@@ -20,8 +20,8 @@ export const Authentication = () => {
             </div>
             <Routes>
             <Route path='/' element={<Login></Login>} />
-              <Route path='/login' element={<Login></Login>} />
-              <Route path='/register' element={<Register></Register>} />
+              <Route path='/signin' element={<Login></Login>} />
+              <Route path='/signup' element={<Register></Register>} />
             </Routes>
             </Card>
             </div>

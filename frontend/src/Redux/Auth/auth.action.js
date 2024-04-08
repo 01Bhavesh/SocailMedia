@@ -1,9 +1,9 @@
 import axios from "axios";
-import { GET_PROFILE_FAILURE, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS, LOGIN_FAILURE, LOGIN_SUCCESS, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS } from "./auth.actiontype";
+import { GET_PROFILE_FAILURE, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS } from "./auth.actiontype";
 import { API_BASE_URL, api } from "../../config/api";
 
 export const loginUserAction = (loginData) => async (dispatch) => {
-    dispatch({ type: LOGIN_SUCCESS }); // Dispatch LOGIN_SUCCESS initially
+    dispatch({ type: LOGIN_REQUEST }); // Dispatch LOGIN_SUCCESS initially
     try {
         const { data } = await axios.post(`${API_BASE_URL}/auth/signin`, loginData.data);
 
@@ -22,7 +22,7 @@ export const loginUserAction = (loginData) => async (dispatch) => {
 
 
 export const registerUserAction=(loginData)=>async(dispatch)=>{
-    dispatch({type:LOGIN_SUCCESS})
+    dispatch({type:REGISTER_REQUEST})
     try {
         const {data}=await axios.post(`${API_BASE_URL}/auth/signup`,loginData.data)
 
@@ -31,10 +31,10 @@ export const registerUserAction=(loginData)=>async(dispatch)=>{
             localStorage.setItem("jwt",data.token)
         }
         console.log("register..",data)
-        dispatch({type:LOGIN_SUCCESS,payload:data.jwt})
+        dispatch({type:REGISTER_SUCCESS,payload:data.jwt})
     } catch (error) {
         console.log(".......",error)
-        dispatch({type:LOGIN_FAILURE,payload:error})
+        dispatch({type:REGISTER_FAILURE,payload:error})
     }  
 }
 

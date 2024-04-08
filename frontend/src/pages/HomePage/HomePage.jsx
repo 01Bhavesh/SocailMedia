@@ -8,9 +8,10 @@ import CreateReelsForm from '../../components/Reels/CreateReelsForm';
 import Profile from '../Profile/Profile';
 import HomeRight from '../HomeRight/HomeRight';
 import { useDispatch, useSelector } from 'react-redux';
+import { getProfileAction } from '../../Redux/Auth/auth.action';
 
 export const HomePage = () => {
-  // const dispatch=useDispatch();
+  const dispatch=useDispatch();
     const location=useLocation();
     const jwt = localStorage.getItem("jwt");
     const {auth} = useSelector(store=>store);

@@ -77,9 +77,9 @@ const handleNavigate=(item)=>{
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={()=>navigate(`/profile/${auth.user?.id}`)}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={()=>navigate("/signin")}>Logout</MenuItem>
       </Menu>
         </div>
         </div>

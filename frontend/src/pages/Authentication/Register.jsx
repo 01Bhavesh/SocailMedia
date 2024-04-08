@@ -9,8 +9,8 @@ import Radio from '@mui/material/Radio';
 import { registerUserAction } from '../../Redux/Auth/auth.action';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-const initialValues = {firstName:"",lastName:"",email:"",password:"",gender:""}
-const validationSchema = {email:Yup.string().email("Invalid email").required("Email is required"),password:Yup.string().min(6,"Password must be at least 6 characters").required("Password is required")}
+const initialValues = {firstName:"",lastName:"",gmail:"",password:"",gender:""}
+const validationSchema = {gmail:Yup.string().email("Invalid gmail").required("gmail is required"),password:Yup.string().min(6,"Password must be at least 6 characters").required("Password is required")}
 export const Register = () => {
     const [gender,setGender] = useState("");
     const dispatch=useDispatch();
@@ -44,8 +44,8 @@ export const Register = () => {
 <ErrorMessage name="lastName" component={"div"} className='text-red-500'></ErrorMessage>
 </div>
 <div>
-    <Field as={TextField} name='email' placeholder='Email' type='email' variant='outlined' fullWidth></Field>
-<ErrorMessage name="email" component={"div"} className='text-red-500'></ErrorMessage>
+    <Field as={TextField} name='gmail' placeholder='gmail' type='email' variant='outlined' fullWidth></Field>
+<ErrorMessage name="gmail" component={"div"} className='text-red-500'></ErrorMessage>
 </div>
 <div>
     <Field as={TextField} name='password' placeholder='Password' type='password' variant='outlined' fullWidth></Field>
@@ -71,7 +71,7 @@ export const Register = () => {
     </Formik>
     <div className='flex gap-2 item-center justify-center pt-5'>
         <p>If you an account....</p>
-        <Button onClick={()=>navigate("/login")}>Login</Button>
+        <Button onClick={()=>navigate("/signin")}>Login</Button>
     </div>
     </>
   );
